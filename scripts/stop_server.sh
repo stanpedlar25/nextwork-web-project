@@ -1,9 +1,16 @@
 #!/bin/bash
-isExistApp="$(pgrep httpd)"
-if [[ -n $isExistApp ]]; then
-sudo systemctl stop httpd.service
+echo "Stopping services..."
+
+# Stop HTTPD if running
+if pgrep httpd > /dev/null; then
+    sudo systemctl stop httpd
+    echo "HTTPD stopped."
 fi
-isExistApp="$(pgrep tomcat)"
-if [[ -n $isExistApp ]]; then
-sudo systemctl stop tomcat.service
+
+# Stop Tomcat if running
+if systemctl list-units --full -all | grep -q tomcat.service; then
+    sudo systemctl stop tomcat
+    echo "Tomcat stopped."
 fi
+
+echo "All services stopped."
