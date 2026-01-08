@@ -1,16 +1,10 @@
 #!/bin/bash
-echo "Stopping services..."
+# Add this at the top of your script to make it exit immediately if any command fails
+set -e
 
-# Stop HTTPD if running
-if pgrep httpd > /dev/null; then
-    sudo systemctl stop httpd
-    echo "HTTPD stopped."
-fi
+# Your intentional error
+sudo systemctll stop httpd.service  # Misspelled command will now cause script to exit with non-zero status
 
-# Stop Tomcat if running
-if systemctl list-units --full -all | grep -q tomcat.service; then
-    sudo systemctl stop tomcat
-    echo "Tomcat stopped."
-fi
+# To be extra sure, we can also add an explicit exit code
+exit 1
 
-echo "All services stopped."
